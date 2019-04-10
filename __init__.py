@@ -2,7 +2,7 @@ import sqlite3
 
 class db:
 	def __init__(self, dbname):
-		self.conn = sqlite3.connect(dbname)
+		self.conn = sqlite3.connect(dbname, check_same_thread=False)
 		self.cur = self.conn.cursor()
 
 	def read(self, command, flat=True):
@@ -26,7 +26,7 @@ class db:
 	
 	def write(self, command):
 		self.cur.execute(command)
-		self.cur.commit()
+		self.conn.commit()
 
 	def __del__(self):
 		self.conn.close()
