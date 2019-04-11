@@ -3,11 +3,11 @@ import sqlite3
 class db:
 	def __init__(self, dbname):
 		self.conn = sqlite3.connect(dbname, check_same_thread=False)
-		self.cur = self.conn.cursor()
 
 	def read(self, command, flat=True):
-		self.cur.execute(command)
-		f = self.cur.fetchall()
+		cur = self.conn.cursor()
+		cur.execute(command)
+		f = cur.fetchall()
 		if not f or not flat:
 			return f
 		else:
@@ -18,14 +18,16 @@ class db:
 			return f
 
 	def read1(self, command):
-		self.cur.execute(command)
-		f = self.cur.fetchone()
+		cur = self.conn.cursor()
+		cur.execute(command)
+		f = cur.fetchone()
 		if len(f) == 1:
 			f = f[0]
 		return f
 	
 	def write(self, command):
-		self.cur.execute(command)
+		cur = self.conn.cursor()
+		cur.execute(command)
 		self.conn.commit()
 
 	def __del__(self):
